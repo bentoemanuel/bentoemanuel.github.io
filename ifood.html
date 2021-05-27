@@ -1,0 +1,216 @@
+<html>
+
+<head>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js"></script>
+
+    <script>
+
+        var coords;
+        var url = new URL("https://marketplace.ifood.com.br/v2/search/catalog-items");
+        var params = new URLSearchParams();
+        var res;
+        var id;
+
+        function search() {
+
+            let lat = document.getElementById("latitude").value;
+            let lon = document.getElementById("longitude").value;
+
+            if(!coords && (lat && lon)) {
+                let lati = parseFloat(lat);
+                let long = parseFloat(lon);
+                if(!isNaN(lati) && !isNaN(long)) {
+                    coords = [long,lati];
+                }else {
+                    document.getElementById("cord").style = "color: rgb(255,0,0);"
+                    document.getElementById("cord").innerHTML = "Digite coordenadas validas"
+                    setTimeout(function() {
+                        document.getElementById("cord").removeAttribute("style")
+                        document.getElementById("cord").innerHTML = "Ou digite as coordenadas:"
+                    }, 5000);
+                }
+            }else if(!coords) {
+                document.getElementById("loc").style = "color: rgb(255,0,0);"
+                document.getElementById("loc").innerHTML = "Escolha ou digite localização"
+                setTimeout(function() {
+                    document.getElementById("loc").removeAttribute("style")
+                    document.getElementById("loc").innerHTML = "Escolha uma localização:"
+                }, 5000);
+            }
+            if(document.getElementById("textarea").value) {
+            if(coords) {
+                console.log("ok");
+                params.append("channel","IFOOD");
+                params.append("term",document.getElementById("textarea").value);
+                params.append("latitude",coords[1]);
+                params.append("longitude",coords[0]);
+                params.append("size",45);
+                let urls = url.toString() + "?" + params.toString();
+                console.log(urls);
+                let http = new XMLHttpRequest();
+                http.open("GET", urls);
+                http.send();
+                document.getElementById("result").innerHTML = "Carregando..."
+                http.onload = (e) => { recieve(http.responseText) }
+            }
+            }else {
+                document.getElementById("item").style = "color: rgb(255,0,0);"
+                setTimeout(function() {
+                    document.getElementById("item").removeAttribute("style");
+                }, 5000);
+            }
+
+        }
+
+        window.onload = () => {
+            buildHTML({"id":"fa1965c6-cb51-40a2-becf-26b6ecf03f6e","page":0,"size":45,"items":{"total":8621,"data":[{"id":"6629384c-e84a-4703-9bdf-954c98c7a05e","code":"67165149","name":"Batata maluca=batata frita + calabresa +4 pedaço e gorjão de frango + bacon (embalagem de 25cm)","description":"","resources":[{"type":"PHOTO","fileName":"e84ab4c6-47ce-4499-b3ca-9c45377c8f3b/201904250009_7xyc_c.jpg"}],"category":{"code":"1W5I2","name":"Promoções de Abril"},"tags":[],"originalPrice":46.99,"price":42.99,"minimumPrice":42.99,"merchant":{"id":"e84ab4c6-47ce-4499-b3ca-9c45377c8f3b","name":"Zap Zap Lanches e Refeições","slug":"rio-de-janeiro-rj/zap-zap-lanches-e-refeicoes-sampaio","features":["DELIVERY","IMMEDIATE_ORDER"],"userRating":4.4404,"distance":9.36,"deliveryTime":40,"deliveryFee":{"type":"FIXED","value":15},"resources":[{"type":"LOGO","fileName":"201808082053_e84ab4c6-47ce-4499-b3ca-9c45377c8f3b.png"},{"type":"HEADER","fileName":"e84ab4c6-47ce-4499-b3ca-9c45377c8f3b/201911181831_Spqv_z.jpg"}],"tags":["ABR20_LANCHE","ADDRESS_PREFORM_TYPE","ATE15_TXGRATIS_NOVOS","BF_70_OFF_19","BF_CUPOM15OFF_NOV20","BOM_BARATO_AB","BOMEBARATO_CUPOM","carrossel_madrugada_ago20","CART::CPGN_1810_DISHES_10","CART::CPGN_1810_DISHES_10_ELIGIBLE","CART::CPGN_1810_DISHES_10_OPTED_IN","CART::DELIVERY_FEE_DISH_ELIGIBLE","CART::MCHT::TAXA_GRATIS_NOVOS_ATE_3_0","CART::MCHT::TX_GRATIS_CRITICOS_FEV_MAR_100","CONTA_ESTRATEGICA","CPGN_1811_BLK_NOV","CPGN_1811_BLK_NOV_30_ELIGIBLE","CPGN_1811_BLK_NOV_30_OPTED_IN","CPGN_1811_BLK_NOV_50_ELIGIBLE","CPGN_1811_BLK_NOV_50_OPTED_IN","CPGN_1811_BLK_NOV_ELIGIBLE","CPGN_1811_BLK_NOV_OO","CPGN_1811_BLK_NOV_OPTED_IN","CPGN_1811_BLK_NOV_PERFORMANCE","CPGN_DISC_1809_30_ELIGIBLE","CPGN_DISC_1809_30_OPTED_IN","CPGN_DISC_1809_50_OPTED_IN","CPGN_DISC_1809_ELIGIBLE","CPGN_DISC_1809_OPTED_IN","CPGN_VOUCHER_LIGHT_KA","EXCLUSIVO","FAMOSOS","FAMOSOS_ELIGIBLE","FAMOSOSJAN20","FAMOSOS_OPTED_IN","FAMOSOS_TOGO_NOV19","GUIDED_HELP_TYPE","HAMBURGUER_TAXA_GRATIS","HOT_DOG_SET20","HS_HDG_V1","JANTAR_ATE_15","JANTAR_ATE_15_ELIGIBLE","JANTAR_ATE_15_OPTED_IN","JETSKI_BURGER_20AGO","jetski_burger_ago20","JETSKI_WPP_FREQ","JET_WPP_FREQ_23_03_TO_26_03","LOYALTY_CARD_3","MAISPEDIDOS_REGIAO","MAR20_PASCOA_REF","MARCAS_FAMOSAS_CARROSSEL","MELHORES_RESTAURANTES_CHURN_ABR21","MER_BEB_GELADO_ALCOOL","MKT_PDIVIDIR_MAR20","NAMORADOS_CUPOM","NOVO_ABB_JUL20_V1","NOVO_BOM_BARATO_JUN20","PAGAMENTO_DINHEIRO_SET19","PRA_RETIRAR_JUN19","PRATOS_SOPAS_CALDOS","RANKING_DESCONTO_ATE70_MAR21","RANKING_FASTFOODS_FEV21","RANKING_OFERTAS_ATE20_MAR21","RES_ABR21_FANTA_EG","RES_COCA_LISTALANCHES","RES_COMBOSFANTA_MIDIA","RESTAURANTES_PGTO_OFF_CHURN_ABR21","RESTAURANTE VOUCHER5 GUARANA","REST_DE20_COCA_2POR1","REST_DEZ20_COCA_LISTA2POR1","REST_DEZ20_NAB_EG","REST_FEV21_AMBEVNAB","REST_NOV20_AMBEVNAB_EG","REST_OUT20_CERAMBEV_FRETEGRATIS EST","SELECIONADOS_KA_CE_ELIGIBLE","SELECIONADOS_KA_CE_OPTED_IN","SEMANA_HAMBURGUER_DESTAQUES","SOPA_JUL19","SO_TEM_NO_IFOOD","SUPER_RESTAURANT","WIZARD_NOVOS","WRAPPED_DEZ19"],"paymentCodes":["DNR","MPAY","MOVPAY_MC","RAM","MC","GPY_ELO","REC","RDREST","ELOD","GPY_MCMA","AM","MCMA","MOVPAY_AM","DIN","APL_ELOD","IMV","MOVPAY_VIS","GPY_ELOD","TRE","APL_MCMA","GPY_MC","APL_ELO","MOVPAY_HIPER","DNREST","PIX","APL_VISE","HIPER","IFE","VIS","VVREST","RED","VIREST","VR_SMA","VSREST","APL_VIS","MOVPAY_ELO","GPY_VISE","MOVPAY_DNR","VISE","ELO","APL_MC","MEREST","GPY_VIS"],"priceRange":"CHEAP","mainCategory":{"code":"LCH","name":"Lanches"},"available":true,"merchantChain":{"id":"d97d70d6-7986-4284-b5fb-23b5393a2528","name":"Zap Zap Lanches","slug":"zapzaplanches","resources":[]},"takeoutTime":35,"contextSetup":{"context":"DEFAULT","regionGroup":"e1dbd9d8-45d6-4b33-aafc-417b8d69b06d","catalogGroup":"ffca0022-eb43-4205-9a1b-73a72f8e3f95"}}}]}}, 0);
+        }
+
+        function recieve(response) {
+
+            res = response;
+            let json = JSON.parse(response);
+            delete json.items.facets;
+            document.getElementById("response").innerHTML = JSON.stringify(json);
+            document.getElementById("result").innerHTML = "Mostrando " + (json.size<json.items.total?json.size:json.items.total).toString() + " itens de " + json.items.total.toString();
+            document.getElementById("food").innerHTML = "";
+            for(let i = 0; i < json.items.data.length; i++) {
+            
+                buildHTML(json, i);
+            
+            }
+
+            
+        }
+
+        function buildHTML( json , i ) {
+            let s = "";
+            s += "<div style='width: 300px; box-shadow: 0 0 5px black; margin: 10px 10px 10px 10px; border-radius: 5px; overflow: hidden;' id='"+i.toString()+"' class='card'><a style='font-family: Arial; text-decoration: none; color: black;' href='https://ifood.com.br/delivery/"+json.items.data[i].merchant.slug+"/"+json.items.data[i].merchant.id+"?prato="+json.items.data[i].code+"' >"
+            if(json.items.data[i].resources.find(e => e.type == "PHOTO")) {
+            s += "<img src='https://static-images.ifood.com.br/image/upload/t_low/pratos/"+ json.items.data[i].resources.find(e => e.type == "PHOTO").fileName +"'>";
+            }else {
+            s += "<img src='https://via.placeholder.com/150'>";
+            }
+            let p = (json.items.data[i].minimumPrice?json.items.data[i].minimumPrice:json.items.data[i].price);
+            s += "<br><hr><p style='margin: 16px 16px 16px 16px;'>" + json.items.data[i].name + "<br><br>";
+            s += json.items.data[i].originalPrice?"<del>R$ "+json.items.data[i].originalPrice.toString() + (((json.items.data[i].originalPrice*100)%100)==0?".0":"") + (((json.items.data[i].originalPrice*100)%10)==0?"0":"") +"</del> ":"";
+            s += "R$ " + p.toString() + (((p*100)%100)==0?".0":"") + (((p*100)%10)==0?"0":"") + "</p><br><hr></a><a style='color: black; text-decoration: none; margin: 16px 16px 16px 16px;' href='https://ifood.com.br/delivery/"+json.items.data[i].merchant.slug+"/"+json.items.data[i].merchant.id+"'>";
+            if(json.items.data[i].merchant.resources.find(e => e.type == "LOGO")) {
+            s += "<img style='width: 50px; height: 50px; margin: 0 16px 8px 0; border-radius: 25px;' src='https://static-images.ifood.com.br/image/upload/t_thumbnail/logosgde/"+json.items.data[i].merchant.resources.find(e => e.type == "LOGO").fileName+"'>"
+            }else {
+            s += "<img style='width: 50px; height: 50px; margin: 0 16px 8px 0; border-radius: 25px;' src='https://via.placeholder.com/150'>";
+            }
+            s += "<p style='display: inline-block; font-family: Arial; width: 202; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 14px 0 24px 0;'>" + json.items.data[i].merchant.name;
+            s += "</p><hr><p style='margin: 16px'>" + (json.items.data[i].merchant.deliveryFee.value==0?"<span style='color: green;'>GRÁTIS</span>":"R$ "+json.items.data[i].merchant.deliveryFee.value.toString() + (((json.items.data[i].merchant.deliveryFee.value*100)%100)==0?".0":"") + (((json.items.data[i].merchant.deliveryFee.value*100)%10)==0?"0":""));
+            s += " &nbsp " + (json.items.data[i].merchant.priceRange=="CHEAPEST"?"$":json.items.data[i].merchant.priceRange=="CHEAP"?"$$":json.items.data[i].merchant.priceRange=="MODERATE"?"$$$":json.items.data[i].merchant.priceRange=="EXPENSIVE"?"$$":"error") + "<span style='color: lightgray;'>" + (json.items.data[i].merchant.priceRange=="CHEAPEST"?"$$$":json.items.data[i].merchant.priceRange=="CHEAP"?"$$":json.items.data[i].merchant.priceRange=="MODERATE"?"$":"") + "</span>";
+            s += " &nbsp " + json.items.data[i].merchant.distance + " km"
+            s += "</p></div>";
+            document.getElementById("food").innerHTML += s;
+        }
+
+        document.oncontextmenu = (e) => {
+            console.log(e.srcElement.className);
+            if (e.srcElement.className == "card") {
+                e.preventDefault(); document.getElementById("ctxMenu").style.display = "block";
+                document.getElementById("ctxMenu").style.left = e.pageX + "px";
+                document.getElementById("ctxMenu").style.top = e.pageY + "px";
+                id = e.srcElement.id;
+            } else {
+                document.getElementById("ctxMenu").style.display = "none";
+            }
+        }
+
+        document.onclick = (e) => {
+            document.getElementById("ctxMenu").style.display = "none";
+        }
+
+        function printJSON() {
+            console.log(JSON.parse(res).items.data[id]);
+        }
+
+    </script>
+</head>
+
+<body>
+
+    <style>
+        li:hover {
+            background-color: #C8C8C9;
+        }
+    </style>
+    <div style="border: solid 1px #DADCE0;box-shadow: 1px 1px 3px -2px; width: max-content; display: none; position: absolute; background-color: white;" id="ctxMenu">
+        <ul style="list-style: none;margin: 3px 0;padding: 0;">
+            <li style="font-family: Segoe UI;font-size: 12px;padding: 7px 112px 7px 38px;" onclick="printJSON()">Imprimir JSON</li>
+        </ul>
+    </div>
+    </div>
+    <p id="item">Pesquise um Item:</p>
+    <textarea id="textarea" style="width: 200pt; height: 30pt; resize: none;"></textarea>
+    <p id="loc">Escolha uma localização:</p>
+    
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css">
+    <!-- Promise polyfill script required to use Mapbox GL Geocoder in IE 11 -->
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+
+    <div id="map" style="margin-bottom: 10px; margin-top: 10px; width: 600pt; height: 200pt;"></div>
+    <button onclick="for(let i = 0; i < map.getContainer().getElementsByClassName('mapboxgl-marker').length; i++) { map.getContainer().getElementsByClassName('mapboxgl-marker')[i].remove() } coords = undefined;">Remover Marcador</button>
+
+    <script>
+
+        mapboxgl.accessToken = '***REMOVED***';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [0,0]
+        });
+
+        var geocoder = new MapboxGeocoder({
+                accessToken: mapboxgl.accessToken,
+                mapboxgl: mapboxgl
+        });
+        
+        geocoder.on("result", function(result) {
+
+            coords = result.result.geometry.coordinates;
+
+        });
+
+        geocoder.on("clear", function() {
+
+            coords = undefined;
+
+        });
+
+        map.on("click", function(e) {
+            for(let i = 0; i < map.getContainer().getElementsByClassName('mapboxgl-marker').length; i++) {
+                map.getContainer().getElementsByClassName('mapboxgl-marker')[i].remove();
+           }
+            coords = [e.lngLat.lng,e.lngLat.lat];
+            new mapboxgl.Marker().setLngLat(coords).addTo(map);
+        });
+
+        map.addControl(
+            geocoder
+        );
+
+    </script>
+
+    <p id="cord">Ou digite as coordenadas:</p>
+    <p>Latitude:</p>
+    <textarea id="latitude"></textarea>
+    <p>Longitude:</p>
+    <textarea id="longitude"></textarea>
+    <button onclick="search()" style="background-color: rgb(64,64,255); color: white; width: fit-content; height: 30pt; border-radius: 5px; border: none;">Pesquisar!</button>
+
+    <p id="result"></p>
+    <div id="food" style="display: flex; flex-wrap: wrap;"></div>
+    <p id="response" style="width: 50%; height: 300pt; overflow: scroll;">
+    </p>
+
+</body>
+
+</html>
