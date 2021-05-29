@@ -2,8 +2,10 @@
 <head>
     <script>
         var url = "https://api.github.com/repos/bentoemanuel/bentoemanuel.github.io/contents/";
-        load();
+        document.addEventListener("DOMContentLoaded", function() { load(); });
         function load() {
+            document.getElementById("title").innerHTML = "Index of " + url.replace("https://api.github.com/repos/bentoemanuel/bentoemanuel.github.io/contents","");
+            document.getElementById("area").innerHTML = "<p>Loading...</p>";
             var http = new XMLHttpRequest();
             http.open("GET", url);
             http.send();
@@ -14,7 +16,7 @@
                     if(json[i].type == "file") {
                     document.getElementById("area").innerHTML += "<a href='" + json[i].path + "'>" + json[i].name + "</a><br>";
                     }else {
-                    document.getElementById("area").innerHTML += "<a href='javascript:void(0);' onclick='url += " + json[i].path + "; load();'>" + json[i].name + "</a><br>";
+                    document.getElementById("area").innerHTML += "<a href='javascript:void(0);' onclick='url += \"" + json[i].path + "/\"; load();'>" + json[i].name + "</a><br>";
                     }
                 }
             }
@@ -23,8 +25,9 @@
     </script>
 </head>
 <body>
+    <h1 id="title"></h1>
+    <hr>
 <div id="area">
-<p>Loading...</p>
 </div>
 </body>
 </html>
