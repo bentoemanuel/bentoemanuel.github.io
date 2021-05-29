@@ -1,10 +1,10 @@
 <html>
 <head>
     <script>
+        var url = "https://api.github.com/repos/bentoemanuel/bentoemanuel.github.io/contents/";
         load();
         function load() {
             var http = new XMLHttpRequest();
-            var url = "https://api.github.com/repos/bentoemanuel/bentoemanuel.github.io/contents/";
             http.open("GET", url);
             http.send();
             http.onload = () => {
