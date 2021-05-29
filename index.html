@@ -1,1 +1,30 @@
-<a href="ifood.html">ifood.html</a>
+<html>
+<head>
+    <script>
+        load();
+        function load() {
+            var http = new XMLHttpRequest();
+            var url = "https://api.github.com/repos/bentoemanuel/bentoemanuel.github.io/contents/";
+            http.open("GET", url);
+            http.send();
+            http.onload = () => {
+                document.getElementById("area").innerHTML =  "";
+                let json = JSON.parse(http.responseText);
+                for(let i = 0; i < json.length  ; i++) {
+                    if(json[i].type == "file") {
+                    document.getElementById("area").innerHTML += "<a href='" + json[i].path + "'>" + json[i].name + "</a><br>";
+                    }else {
+                    document.getElementById("area").innerHTML += "<a href='javascript:void(0);' onclick='url += " + json[i].path + "; load();'>" + json[i].name + "</a><br>";
+                    }
+                }
+            }
+            http.ontimeout = () => { load() };
+        }
+    </script>
+</head>
+<body>
+<div id="area">
+<p>Loading...</p>
+</div>
+</body>
+</html>
