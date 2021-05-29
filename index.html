@@ -11,6 +11,9 @@
             http.send();
             http.onload = () => {
                 document.getElementById("area").innerHTML =  "";
+                if(url.lastIndexOf("/") > 73) {
+                document.getElementById("area").innerHTML += "<a href='javascript:void(0);' onclick=' url = \"" + url.replace(url.slice(url.lastIndexOf("/",url.lastIndexOf("/")-1)+1), "") +"\"; load();'>..</a><br>";
+                }
                 let json = JSON.parse(http.responseText);
                 for(let i = 0; i < json.length  ; i++) {
                     if(json[i].type == "file") {
