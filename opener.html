@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <script>
+            function opener() {
+                var value = document.getElementById("text").value;
+                var valuess = value.split("\n");
+                var i = 0;                  
+                function myLoop() {         
+                    setTimeout(function() {   
+                        window.open(valuess[i]);
+                        i++;                    
+                        if (i < valuess.length) {           
+                            myLoop();             
+                        }                       
+                    }, 500)
+                }
+
+                myLoop(); 
+            }
+        </script>
+    </head>
+    <body>
+        <textarea style="width: 620px; height: 474px;" id="text"></textarea>
+        <button onclick="opener();">Open!</button>
+    </body>
+</html>
