@@ -2,6 +2,7 @@
     <head>
         <script>
             function opener() {
+                let delay = document.getElementById("delay").value;
                 var value = document.getElementById("text").value;
                 var valuess = value.split("\n");
                 var i = 0;                  
@@ -12,15 +13,21 @@
                         if (i < valuess.length) {           
                             myLoop();             
                         }                       
-                    }, 500)
+                    }, delay)
                 }
 
                 myLoop(); 
+            }
+            function clear() {
+                document.getElementById("text").value = '';
             }
         </script>
     </head>
     <body>
         <textarea style="width: 620px; height: 474px;" id="text"></textarea>
         <button onclick="opener();">Open!</button>
+        <button onclick="clear()">Clear!</button>
+        <p>Delay:</p>
+        <textarea inputmode="numeric" id="delay">500</textarea>
     </body>
 </html>
