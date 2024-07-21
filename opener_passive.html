@@ -1,27 +1,29 @@
 <html>
 
 <head>
-    <script> 
-    document.getElementById('butt')
-        .addEventListener('click', () => 
-        {
-            navigator.clipboard.readText()
-            .then(text => 
-                { 
-                    let texts = text.split("\n");
-                    for(i in texts) {
-                        document.getElementById("list").innerHTML += "<li><a href="+texts[i]+">"+texts[i]+"</a></li>";
-                    }
-                });
-        }); 
-    </script>
+    
 </head>
 
-<body> <textarea id="text" style="height: 500px; width: 500px; "></textarea> <button id="butt">Ok!</button>
+<body> <textarea id="text" style="height: 500px; width: 500px; "></textarea>
+    <button id="butt">Ok!</button>
     <button onclick="document.getElementById('text').value=''">Clear!</button>
     <ul id="list">
         
     </ul>
+    <script> 
+            document.getElementById('butt')
+                .addEventListener('click', () => 
+                {
+                    navigator.clipboard.readText()
+                    .then(text => 
+                        { 
+                            let texts = text.split("\n");
+                            for(i in texts) {
+                                document.getElementById("list").innerHTML += "<li><a href="+texts[i]+">"+texts[i]+"</a></li>";
+                            }
+                        });
+                }); 
+    </script>
 </body>
 
 </html>
