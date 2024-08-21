@@ -19,15 +19,22 @@
                 myLoop(); 
             }
             function clear() {
-                document.getElementById("text").value = '';
+                document.getElementById("text").value = "https://example.com\nhttps://example.com";
+            }
+            function count() {
+                document.getElementById("count").innerHTML = "Count: " + document.getElementById("text").value.split("\n").length;
+            }
+            function btn() {
+                clear();
             }
         </script>
     </head>
     <body>
-        <textarea style="width: 620px; height: 474px;" id="text"></textarea>
+        <textarea style="width: 620px; height: 474px;" id="text" oninput="count();"></textarea>
         <button onclick="opener();">Open!</button>
-        <button onclick="clear()">Clear!</button>
+        <button onclick="btn();">Clear!</button>
         <p>Delay:</p>
         <textarea inputmode="numeric" id="delay">500</textarea>
+        <span id="count">Count:</span>
     </body>
 </html>
