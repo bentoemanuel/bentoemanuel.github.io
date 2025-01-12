@@ -14,7 +14,7 @@
             document.getElementById("select-img").hidden = true;
             document.getElementById("img").hidden = true;
             document.getElementById("loading").hidden = false;
-            audioCtx = new AudioContext()
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             audio = await document.getElementById("audio").files[0];
             arrBuff = await audio.arrayBuffer()
             try {
@@ -60,7 +60,15 @@
         }
 
         let fullscreen = () => {
-            document.getElementById("image").requestFullscreen();
+            if(document.getElementById("image").requestFullscreen) {
+                document.getElementById("image").requestFullscreen();
+            }else if (document.getElementById("image").mozRequestFullScreen) {
+                document.getElementById("image").mozRequestFullScreen();     // Firefox
+            }else if (document.getElementById("image").webkitRequestFullscreen) {
+                document.getElementById("image").webkitRequestFullscreen();  // Safari
+            }else if(document.getElementById("image").msRequestFullscreen) {
+                document.getElementById("image").msRequestFullscreen();      // IE/Edge
+            }
         }
     </script>
 </head>
