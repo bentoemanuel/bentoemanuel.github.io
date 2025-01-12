@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script defer>
+        let audioCtx;
+        let audio;
+        let arrBuff;
+        let data;
+        let source;
+        let audioPlaying = false;
+        let loadAudio = async () => {
+            document.getElementById("select").hidden = true;
+            document.getElementById("audio").hidden = true;
+            document.getElementById("select-img").hidden = true;
+            document.getElementById("img").hidden = true;
+            document.getElementById("loading").hidden = false;
+            audioCtx = new AudioContext()
+            audio = await document.getElementById("audio").files[0];
+            arrBuff = await audio.arrayBuffer()
+            try {
+            data = await audioCtx.decodeAudioData(arrBuff)
+            document.getElementById("seconds").max = Math.round(data.duration*10)/10;
+            document.getElementById("seconds").hidden = false;
+            document.getElementById("play").hidden = false;
+            document.getElementById("loading").hidden = true;
+            document.getElementById("time").hidden = false;
+            document.getElementById("image").src = URL.createObjectURL(document.getElementById("img").files[0]);
+            setInterval(() => {
+                if(audioPlaying) {
+                    document.getElementById("seconds").valueAsNumber += 0.1;
+                }
+                document.getElementById("time").innerHTML = Math.floor(document.getElementById("seconds").valueAsNumber / 60) + ":" + Math.floor(document.getElementById("seconds").valueAsNumber)%60 + "." + Math.round((document.getElementById("seconds").valueAsNumber%1)*10)
+            }, 100);
+            } catch (e) {
+                console.error(e);
+                document.getElementById("loading").hidden = true;
+                document.getElementById("error").innerHTML = e;
+                document.getElementById("error").hidden = false;
+            }
+        }
+
+        let play = async () => {
+            source = audioCtx.createBufferSource();
+            source.buffer = data
+            source.connect(audioCtx.destination)
+            source.start(0,document.getElementById("seconds").valueAsNumber)
+            source.onended = () => {
+                stop();
+            }
+            audioPlaying = true;
+            document.getElementById("play").innerHTML = "Stop!";
+            document.getElementById("play").onclick = stop;
+        }
+
+        let stop = async () => {
+            source.stop();
+            audioPlaying = false;
+            document.getElementById("play").innerHTML = "Play!";
+            document.getElementById("play").onclick = play;
+        }
+
+        let fullscreen = () => {
+            document.getElementById("image").requestFullscreen();
+        }
+    </script>
+</head>
+<body>
+
+    <input type="range" id="seconds" min="0" onload="loadAudio()" hidden step="0.1">
+    <button onclick="play()" id="play" hidden>Play!</button>
+    <p id="time" hidden>0:00.0</p>
+    <img id="image" onclick="fullscreen()">
+    <span id="select">Select audio:</span>
+    <input type="file" id="audio" onchange="loadAudio()">
+    <p id="select-img">Select image:
+    <input type="file" id="img" onchange=""></p>
+    <span id="loading" hidden>Loading...</span>
+    <p id="error" style="color: red;" hidden></p>
+</body>
