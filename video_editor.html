@@ -113,7 +113,7 @@
             stream = stream_dest.stream;
             canvasCaptureStream.addTrack(stream.getAudioTracks()[0]);
 
-            recorder = new MediaRecorder(canvasCaptureStream,{ mimeType: 'video/webm' });
+            recorder = new MediaRecorder(canvasCaptureStream,{ mimeType: MediaRecorder.isTypeSupported("video/mp4")?"video/mp4":'video/webm' });
             chunks = [];
 
             recorder.ondataavailable =  (e) => {
@@ -125,7 +125,7 @@
 
             recorder.onstop = function () {
                 const blob = new Blob(chunks,
-                                      { type: 'video/webm' });
+                                      { type: MediaRecorder.isTypeSupported("video/mp4")?"video/mp4":'video/webm' });
                 videoPlayer.src = URL.createObjectURL(blob);
                 videoPlayer.hidden = false;
             };
