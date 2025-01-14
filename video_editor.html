@@ -164,6 +164,8 @@
             source.stop();
 
             timePlaying = 0;
+            document.getElementById("video-link").href = URL.createObjectURL(chunks[0]);
+            document.getElementById("video-link").innerHTML = URL.createObjectURL(chunks[0]);
             document.getElementById("record-time").hidden = true;
             document.getElementById("play").disabled = false;
             document.getElementById("record").innerHTML = "Record!";
@@ -183,6 +185,7 @@
     <input type="file" id="audio" onchange="loadAudio()">
     <p id="select-img">Select image:
     <input type="file" id="img" onchange=""></p>
+    <a id="video-link" href=""></a>
     <video id="video" hidden></video>
     <span id="loading" hidden>Loading...</span>
     <p id="error" style="color: red;" hidden></p>
