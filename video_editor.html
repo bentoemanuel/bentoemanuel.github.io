@@ -8,6 +8,17 @@
         let data;
         let source;
         let audioPlaying = false;
+        let recording = false;
+        let stream;
+        let recorder;
+        let videoPlayer;
+        let canvas;
+        let ctx;
+        let timePlaying = 0;
+        let chunks;
+        let canvasCaptureStream;
+        let imageD = new Image();
+        
         let loadAudio = async () => {
             document.getElementById("select").hidden = true;
             document.getElementById("audio").hidden = true;
@@ -24,12 +35,23 @@
             document.getElementById("play").hidden = false;
             document.getElementById("loading").hidden = true;
             document.getElementById("time").hidden = false;
+            document.getElementById("record").hidden = false;
             document.getElementById("image").src = URL.createObjectURL(document.getElementById("img").files[0]);
+            imageD.src = URL.createObjectURL(document.getElementById("img").files[0])
+            videoPlayer = document.getElementById("video");
+            canvas = document.getElementById("canvas");
+            ctx = canvas.getContext('2d');
             setInterval(() => {
                 if(audioPlaying) {
                     document.getElementById("seconds").valueAsNumber += 0.1;
                 }
                 document.getElementById("time").innerHTML = Math.floor(document.getElementById("seconds").valueAsNumber / 60) + ":" + Math.floor(document.getElementById("seconds").valueAsNumber)%60 + "." + Math.round((document.getElementById("seconds").valueAsNumber%1)*10)
+            }, 100);
+            setInterval(() => {
+                if(recording) {
+                    timePlaying += 0.1;
+                }
+                document.getElementById("record-time").innerHTML = Math.floor(timePlaying / 60) + ":" + Math.floor(timePlaying)%60 + "." + Math.round((timePlaying%1)*10)
             }, 100);
             } catch (e) {
                 console.error(e);
@@ -48,6 +70,7 @@
                 stop();
             }
             audioPlaying = true;
+            document.getElementById("record").disabled = true;
             document.getElementById("play").innerHTML = "Stop!";
             document.getElementById("play").onclick = stop;
         }
@@ -55,6 +78,7 @@
         let stop = async () => {
             source.stop();
             audioPlaying = false;
+            document.getElementById("record").disabled = false;
             document.getElementById("play").innerHTML = "Play!";
             document.getElementById("play").onclick = play;
         }
@@ -70,18 +94,97 @@
                 document.getElementById("image").msRequestFullscreen();      // IE/Edge
             }
         }
+
+        let record = () => {
+            recording = true;
+            audioPlaying = true;
+            const frameRate = 10; // Frames per second
+            canvasCaptureStream = canvas.captureStream(frameRate);
+            let stream_dest = audioCtx.createMediaStreamDestination();
+            source = audioCtx.createBufferSource();
+            source.buffer = data
+            source.connect(audioCtx.destination)
+            source.connect(stream_dest);
+            source.onended = () => {
+                if(recording) {
+                    stopRecording();
+                }
+            }
+            stream = stream_dest.stream;
+            canvasCaptureStream.addTrack(stream.getAudioTracks()[0]);
+
+            recorder = new MediaRecorder(canvasCaptureStream,{ mimeType: 'video/webm' });
+            chunks = [];
+
+            recorder.ondataavailable =  (e) => {
+                console.log(e);
+                if (e.data.size > 0) {
+                    chunks.push(e.data);
+                }
+            };
+
+            recorder.onstop = function () {
+                const blob = new Blob(chunks,
+                                      { type: 'video/webm' });
+                videoPlayer.src = URL.createObjectURL(blob);
+                videoPlayer.hidden = false;
+            };
+            
+            recorder.start();
+
+            const drawFrame = () => {
+                if (!recording) {
+                    return;
+                }
+
+
+                    ctx.clearRect(0,0,canvas.width,canvas.height)
+                    ctx.drawImage(imageD, 0, 0,canvas.width, canvas.height)
+                    setTimeout(drawFrame, 0);
+
+            };
+
+            document.getElementById("record-time").hidden = false;
+            canvas.width = imageD.width;
+            canvas.height = imageD.height;
+            source.start(0,document.getElementById("seconds").valueAsNumber)
+            drawFrame();
+            
+            document.getElementById("play").disabled = true;
+            document.getElementById("record").innerHTML = "Stop!";
+            document.getElementById("record").onclick = stopRecording;
+        }
+
+        let stopRecording = () => {
+            
+            
+            audioPlaying = false;
+            recording = false;
+            recorder.stop();
+            source.stop();
+
+            timePlaying = 0;
+            document.getElementById("record-time").hidden = true;
+            document.getElementById("play").disabled = false;
+            document.getElementById("record").innerHTML = "Record!";
+            document.getElementById("record").onclick = record;
+        }
     </script>
 </head>
 <body>
 
     <input type="range" id="seconds" min="0" onload="loadAudio()" hidden step="0.1">
     <button onclick="play()" id="play" hidden>Play!</button>
+    <button onclick="record()" id="record" hidden>Record!</button>
     <p id="time" hidden>0:00.0</p>
+    <span id="record-time" hidden style="color: red;">0:00.0</span>
     <img id="image" onclick="fullscreen()">
     <span id="select">Select audio:</span>
     <input type="file" id="audio" onchange="loadAudio()">
     <p id="select-img">Select image:
     <input type="file" id="img" onchange=""></p>
+    <video id="video" hidden></video>
     <span id="loading" hidden>Loading...</span>
     <p id="error" style="color: red;" hidden></p>
+    <canvas id="canvas" hidden></canvas>
 </body>
