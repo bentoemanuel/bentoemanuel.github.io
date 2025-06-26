@@ -1,0 +1,32 @@
+<html><head>
+    <script>
+function multiptxt () {
+let count = document.getElementById("count");
+    count.oninput = () => {count.value = count.value.replace(/[^0-9]/g,'')};
+count.value = count.value.replace(/[^0-9]/g,'')
+document.getElementById("text").value = document.getElementById("inputtext").value.repeat(count.value*1)
+};
+    let copytext = () => {navigator.clipboard.writeText(document.getElementById("text").value);}
+</script>
+</head><body style="/* resize: none; */">
+    
+    <textarea id="inputtext" style="margin: 0px 279px 0px 0px;width: 30pc;height: 20pc;resize: none;"></textarea>
+<p style="
+    margin: 0;
+">
+    </p><div style="
+    display: inline-flex;
+">
+    <textarea id="count" style="margin: 0px;width: 154px;height: 47px;resize: none;font-size: 200%;">10</textarea>
+    <button onclick="multiptxt();" style="
+    width: 8pc;
+    height: 3pc;
+">Multiply!</button>
+</div><p style="
+    margin: 0;
+"></p>
+<textarea id="text" style="/* margin: 0px 279px 0px 0px; */width: 30pc;height: 20pc;resize: none;" disabled="">    </textarea>
+<button onclick="copytext();">Copy
+</button>
+    
+</body></html>
