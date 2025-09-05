@@ -213,7 +213,8 @@
             }
 
             function confereMateria() {
-                if(turmas_imp_e.filter(e => e[0] == document.getElementById("cod").value).length > 1) {
+                let cod = document.getElementById("cod").value;
+                if(cod != "" && turmas_imp_e.filter(e => e[0] == cod).length > 0) {
                     document.getElementById('importar_turmas').hidden = false;
                 }else {
                     document.getElementById('importar_turmas').hidden = true;
@@ -440,4 +441,5 @@
             let tds = calendario.getElementsByTagName("td")
         </script>
     </body>
+
 </html>
