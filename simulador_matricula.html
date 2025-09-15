@@ -13,6 +13,14 @@
                 
             }
 
+            .preenchido {
+                background: orange;
+                font-family: sans-serif;
+                text-align: center;
+                font-size: 90%;
+                border: 2px solid black;
+            }
+
             @keyframes rotation {
                 0% {
                     transform: rotate(0deg);
@@ -237,12 +245,15 @@
                 let hs = [[7,8],[8,9],[9,10],[10,11],[11,12],[12,13],[13,14],[14,15],[15,16],[16,17]];
                 let tempos = Array.from({ length: hs.length }, () => new Array(dias.length).fill(""));;
                 for(dia in dias) {
+                    let h = 0;
                     while(h < hs.length) {
+                        let tx = '<td'
+                        let span = 1;
+                        let fcd = "";
                         if(fab(horario, dias, hs, dia, h) != " ") {
-                            let tx = '<td class="preenchido" '
-                            let fcd = fab(horario, dias, hs, dia, h);
-                            let span = 1;
-                            for(let i = h; i < hs.length; i++) {
+                            tx += ' class="preenchido" ';
+                            fcd = fab(horario, dias, hs, dia, h);
+                            for(let i = h+1; i < hs.length; i++) {
                                 if(fab(horario, dias, hs, dia, i) == fcd) {
                                     span++;
                                 }else {
@@ -250,14 +261,25 @@
                                 }
                             }
                             if(span>1) {
-                                tx += "rowspan=" + span;
+                                tx += 'rowspan="' + span + '"';
                             }
-                            tx += ">" + fcd + "</td>"
-                            h += span;
                         }
+                            tx += ">" + fcd + "</td>";
+                            tempos[h][dia] = tx;
+                            h += span;
                     }
                 }
-                return texto
+                let HS = ['<td id="0">07-08</td>','<tr><td id="6">08-09</td>','<tr><td id="12">09-10</td>','<tr><td id="18">10-11</td>','<tr><td id="24">11-12</td>','<tr><td id="30">12-13</td>','<tr><td id="36">13-14</td>','<tr><td id="42">14-15</td>','<tr><td id="48">15-16</td>','<tr><td id="54">16-16</td>']
+                let tex = '<tbody><tr><th style="width: 46.69px;/* height: 100%; */"></th> <th style="width: 80.5px;font-family: sans-serif;">Segunda</th> <th style="width: 80.5px;">Terça</th> <th style="width: 80.5px;">Quarta</th> <th style="width: 80.5px;">Quinta</th> <th style="width: 80.5px;">Sexta</th></tr>';
+            for( h in tempos ) {
+                tex += "<tr>" + HS[h];
+                for( dia in tempos[h] ) {
+                    tex += tempos[h][dia];
+                }
+                tex += "</tr>";
+            }
+            tex += "</tbody>";
+            return tex;
             }
 
             
