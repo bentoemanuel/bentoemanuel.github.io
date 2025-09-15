@@ -263,6 +263,8 @@
                             if(span>1) {
                                 tx += 'rowspan="' + span + '"';
                             }
+                        }else {
+                            tx += ' style="background: none;"';
                         }
                             tx += ">" + fcd + "</td>";
                             tempos[h][dia] = tx;
@@ -272,7 +274,7 @@
                 let HS = ['<td id="0">07-08</td>','<tr><td id="6">08-09</td>','<tr><td id="12">09-10</td>','<tr><td id="18">10-11</td>','<tr><td id="24">11-12</td>','<tr><td id="30">12-13</td>','<tr><td id="36">13-14</td>','<tr><td id="42">14-15</td>','<tr><td id="48">15-16</td>','<tr><td id="54">16-16</td>']
                 let tex = '<tbody><tr><th style="width: 46.69px;/* height: 100%; */"></th> <th style="width: 80.5px;font-family: sans-serif;">Segunda</th> <th style="width: 80.5px;">Terça</th> <th style="width: 80.5px;">Quarta</th> <th style="width: 80.5px;">Quinta</th> <th style="width: 80.5px;">Sexta</th></tr>';
             for( h in tempos ) {
-                tex += "<tr>" + HS[h];
+                tex += HS[h];
                 for( dia in tempos[h] ) {
                     tex += tempos[h][dia];
                 }
