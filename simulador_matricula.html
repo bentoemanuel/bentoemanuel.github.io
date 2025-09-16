@@ -287,7 +287,7 @@
             }
 
             function proxTabela(n) {
-                i_tabela = (i_tabela + n) % resTabelas.length;
+                i_tabela = Math.abs((i_tabela + n) % resTabelas.length);
                 document.getElementById("horario_pos").innerHTML = resTabelas[i_tabela];
                 document.getElementById("cont_tab").innerHTML = i_tabela+1 +"/" + resTabelas.length + " ";
             }
