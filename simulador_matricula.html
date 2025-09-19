@@ -383,7 +383,9 @@
                     resTabelas.push(renderTabela(possibilidades[i]))
                 }
                 i_tabela = 0;
-                proxTabela(0);},10);
+                proxTabela(0);
+                document.getElementById("tab_pags").hidden = false;
+                document.getElementById("horario_pos").hidden = false;},10);
             }
 
         </script>
@@ -511,9 +513,9 @@
         <p id="materias_inclusas">Matérias inclusas:</p>
         <button id="possibilidades" onclick="testaPossibilidades()" disabled="">Criar todos os horários possíveis</button>
         <p id="horarios_possiveis">Horários possíveis: </p>
-        <p><span id="cont_tab">1/12 </span><button onclick="proxTabela(-1)">◀</button><button onclick="proxTabela(1)">▶</button></p>
+        <p id="tab_pags" hidden><span id="cont_tab">1/12 </span><button onclick="proxTabela(-1)">◀</button><button onclick="proxTabela(1)">▶</button></p>
 
-        <table style="margin-left: 2px;" id="horario_pos">
+        <table style="margin-left: 2px;" id="horario_pos" hidden>
             <tbody><tr><th style="
             width: 46.69px;
             /* height: 100%; */
