@@ -292,6 +292,15 @@
                 document.getElementById("cont_tab").innerHTML = i_tabela+1 +"/" + resTabelas.length + " ";
             }
 
+            async function impGit() {
+                document.getElementById("import_text").innerHTML = '<span style="animation: rotation 1s linear infinite; display: inline-block;">⏳</span>';
+                let csv = (await fetch("https://bentoemanuel.github.io/HORARIO_DAS_DISCIPLINAS_03102025.csv"));
+                const stream = csv.body.pipeThrough(new TextDecoderStream('utf-16'));
+                let r = stream.getReader();
+                importFile((await r.read()).value);
+                document.getElementById("import_text").innerHTML = '';
+            }
+
             
             //BACK-END
             function render(horario) {
@@ -391,7 +400,7 @@
         </script>
     </head>
     <body>
-        <p>Insira o código da Matéria:  <input type="file" id="import_files" onchange="processarArquivo();" hidden=""><a href="javascript:void(0);" onclick="mostrarFile();" id="import_text">Importar de Arquivo...</a></p>
+        <p>Insira o código da Matéria:  <span id="import_text">Importar de Arquivo...</span></p>
         <textarea id="cod" style="margin: 0px;width: 179px;height: 25px;font-size: 123%;resize: none;" oninput="confereMateria();"></textarea>
         <span id="importar_turmas" hidden="">  Turma disponível para essa matéria no arquivo: <button onclick="importTurmas()">Importar Turmas...</button></span>
         <p>Insira os horários da turma:</p>
@@ -610,6 +619,7 @@
             document.getElementById("horarios").addEventListener("mousedown", (e) => {e.preventDefault()});
             let calendario = document.getElementById("calendario")
             let tds = calendario.getElementsByTagName("td")
+            impGit();
         </script>
     
 
