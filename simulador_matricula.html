@@ -195,7 +195,9 @@
                     for( k in hors_i ) {
                         texto += (texto==""?"":" / ")+DDS[hors_i[k].dia]+" "+(hors_i[k].hi<10?"0":"")+hors_i[k].hi+"-"+(hors_i[k].hf<10?"0":"")+hors_i[k].hf;
                     }
-                    adicionarTurma(cod,texto,hors_i);
+                    if(!materias.some((e) => JSON.stringify(e) == JSON.stringify({cod: cod, hrs: hors_i}))) {
+                        adicionarTurma(cod,texto,hors_i);
+                    }
                 }
             }
 
