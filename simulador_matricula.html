@@ -299,7 +299,8 @@
                 let csv = (await fetch("https://bentoemanuel.github.io/HORARIO_DAS_DISCIPLINAS_03102025.csv"));
                 const stream = csv.body.pipeThrough(new TextDecoderStream('utf-16'));
                 let r = stream.getReader();
-                importFile((await r.read()).value);
+                let v = await r.read();
+                importFile(v.value);
                 document.getElementById("import_text").innerHTML = '';
             }
 
