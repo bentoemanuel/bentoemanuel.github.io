@@ -203,7 +203,6 @@
 
             function importFile(imp) {
                 let turmas_imp = imp.split("\r\n");
-                console.log(turmas_imp);
                 turmas_imp_e = [];
                 turmas_imp.forEach((e) => {turmas_imp_e.push(e.split(";"))});
             }
@@ -301,6 +300,7 @@
                 const stream = csv.body.pipeThrough(new TextDecoderStream('utf-16'));
                 let r = stream.getReader();
                 let v = await r.read();
+                console.log(v.value);
                 importFile(v.value);
                 document.getElementById("import_text").innerHTML = '';
             }
