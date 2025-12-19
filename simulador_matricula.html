@@ -403,7 +403,7 @@
         </script>
     </head>
     <body>
-        <p>Insira o código da Matéria:  <span id="import_text">Importar de Arquivo...</span></p>
+        <p>Insira o código da Matéria:  <span id="import_text"><button onclick="impGit()">Carregar Turmas...</button></span></p>
         <textarea id="cod" style="margin: 0px;width: 179px;height: 25px;font-size: 123%;resize: none;" oninput="confereMateria();"></textarea>
         <span id="importar_turmas" hidden="">  Turma disponível para essa matéria no arquivo: <button onclick="importTurmas()">Importar Turmas...</button></span>
         <p>Insira os horários da turma:</p>
@@ -622,7 +622,7 @@
             document.getElementById("horarios").addEventListener("mousedown", (e) => {e.preventDefault()});
             let calendario = document.getElementById("calendario")
             let tds = calendario.getElementsByTagName("td")
-            impGit();
+            //impGit();
         </script>
     
 
