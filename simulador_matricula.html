@@ -297,11 +297,9 @@
             async function impGit() {
                 document.getElementById("import_text").innerHTML = '<span style="animation: rotation 1s linear infinite; display: inline-block;">⏳</span>';
                 let csv = (await fetch("https://bentoemanuel.github.io/HORARIO_DAS_DISCIPLINAS.csv"));
-                const stream = csv.body.pipeThrough(new TextDecoderStream('utf-16'));
-                let r = stream.getReader();
-                let v = await r.read();
-                console.log(v.value);
-                importFile(v.value);
+                let v = await csv.text();
+                console.log(v);
+                importFile(v);
                 document.getElementById("import_text").innerHTML = '';
             }
 
