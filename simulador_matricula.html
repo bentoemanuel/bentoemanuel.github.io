@@ -205,6 +205,11 @@
                 let turmas_imp = imp.split("\r\n");
                 turmas_imp_e = [];
                 turmas_imp.forEach((e) => {turmas_imp_e.push(e.split(";"))});
+                for( e in turmas_imp_e ) {
+                    for( g in turmas_imp_e[e] ) {
+                        turmas_imp_e[e][g] = turmas_imp_e[e][g].trim();
+                    }
+                }
             }
 
             function mostrarFile() {
