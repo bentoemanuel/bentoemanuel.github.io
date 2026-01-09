@@ -298,9 +298,7 @@
                 document.getElementById("import_text").innerHTML = '<span style="animation: rotation 1s linear infinite; display: inline-block;">⏳</span>';
                 let csv = (await fetch("https://bentoemanuel.github.io/HORARIO_DAS_DISCIPLINAS.csv"));
                 let v = await csv.text();
-                console.log(v);
                 importFile(v);
-                document.getElementById("import_text").innerHTML = '';
             }
 
             
@@ -402,7 +400,7 @@
         </script>
     </head>
     <body>
-        <p>Insira o código da Matéria:  <span id="import_text"><button onclick="impGit()">Carregar Turmas...</button></span></p>
+        <p>Insira o código da Matéria:  <span id="import_text"></span></p>
         <textarea id="cod" style="margin: 0px;width: 179px;height: 25px;font-size: 123%;resize: none;" oninput="confereMateria();"></textarea>
         <span id="importar_turmas" hidden="">  Turma disponível para essa matéria no arquivo: <button onclick="importTurmas()">Importar Turmas...</button></span>
         <p>Insira os horários da turma:</p>
@@ -621,7 +619,7 @@
             document.getElementById("horarios").addEventListener("mousedown", (e) => {e.preventDefault()});
             let calendario = document.getElementById("calendario")
             let tds = calendario.getElementsByTagName("td")
-            //impGit();
+            impGit();
         </script>
     
 
