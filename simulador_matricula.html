@@ -1,5 +1,5 @@
 
-<!-- saved from url=(0055)file:///C:/Users/PUC/Downloads/simulador_matricula.html -->
+<!-- saved from url=(0055)https://bentoemanuel.github.io/simulador_matricula.html -->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title></title>
         <style>
@@ -241,9 +241,9 @@
                         if( cods[i] != "" && turmas_imp_e.filter(e => e[0] == cods[i]).length > 0) {
                             document.getElementById('importar_turmas').hidden = false;
                             if(cods.length > 1) {
-                                document.getElementById("importar_turmas"). innerHTML = '  Turma disponível para ≥ 1 dessas matérias no arquivo: <button onclick="importTurmas()">Importar Turmas...</button>';
+                                document.getElementById("importar_turmas"). innerHTML = '  Turma disponível para ≥ 1 dessas matérias no banco de dados da PUC: <button onclick="importTurmas()">Importar Turmas...</button>';
                         } else {
-                                document.getElementById("importar_turmas"). innerHTML = '  Turma disponível para essa matéria no arquivo: <button onclick="importTurmas()">Importar Turmas...</button>';
+                                document.getElementById("importar_turmas"). innerHTML = '  Turma disponível para essa matéria no banco de dados da PUC: <button onclick="importTurmas()">Importar Turmas...</button>';
                             }
                         }
                       }
@@ -255,157 +255,14 @@
                 let tempos = Array.from({ length: hs.length }, () => new Array(dias.length).fill(""));;
                 for(dia in dias) {
                     let h = 0;
-                    while(h < hs.length) {
-                        let tx = '<td'
-                        let span = 1;
-                        let fcd = "";
-                        if(fab(horario, dias, hs, dia, h) != " ") {
-                            tx += ' class="preenchido" ';
-                            fcd = fab(horario, dias, hs, dia, h);
-                            for(let i = h+1; i < hs.length; i++) {
-                                if(fab(horario, dias, hs, dia, i) == fcd) {
-                                    span++;
-                                }else {
-                                    break;
-                                }
-                            }
-                            if(span>1) {
-                                tx += 'rowspan="' + span + '"';
-                            }
-                        }else {
-                            tx += ' style="background: none;"';
-                        }
-                            tx += ">" + fcd + "</td>";
-                            tempos[h][dia] = tx;
-                            h += span;
-                    }
-                }
-                let HS = ['<td id="0">07-08</td>','<tr><td id="6">08-09</td>','<tr><td id="12">09-10</td>','<tr><td id="18">10-11</td>','<tr><td id="24">11-12</td>','<tr><td id="30">12-13</td>','<tr><td id="36">13-14</td>','<tr><td id="42">14-15</td>','<tr><td id="48">15-16</td>','<tr><td id="54">16-17</td>']
-                let tex = '<tbody><tr><th style="width: 46.69px;/* height: 100%; */"></th> <th style="width: 80.5px;font-family: sans-serif;">Segunda</th> <th style="width: 80.5px;">Terça</th> <th style="width: 80.5px;">Quarta</th> <th style="width: 80.5px;">Quinta</th> <th style="width: 80.5px;">Sexta</th></tr>';
-            for( h in tempos ) {
-                tex += HS[h];
-                for( dia in tempos[h] ) {
-                    tex += tempos[h][dia];
-                }
-                tex += "</tr>";
-            }
-            tex += "</tbody>";
-            return tex;
-            }
-
-            function proxTabela(n) {
-                i_tabela = Math.abs((i_tabela + n) % resTabelas.length);
-                document.getElementById("horario_pos").innerHTML = resTabelas[i_tabela];
-                document.getElementById("cont_tab").innerHTML = i_tabela+1 +"/" + resTabelas.length + " ";
-            }
-
-            async function impGit() {
-                document.getElementById("import_text").innerHTML = '<span style="animation: rotation 1s linear infinite; display: inline-block;">⏳</span>';
-                let csv = (await fetch("https://bentoemanuel.github.io/HORARIO_DAS_DISCIPLINAS.csv"));
-                let v = await csv.text();
-                importFile(v);
-                document.getElementById("import_text").innerHTML = '';
-            }
-
-            
-            //BACK-END
-            function render(horario) {
-                let texto = ""
-                let dias = [2,3,4,5,6];
-                let hs = [[7,8],[8,9],[9,10],[10,11],[11,12],[12,13],[13,14],[14,15],[15,16],[16,17]];
-                for(h in hs) {
-                let tex = "=SPLIT(\""
-                    for(dia in dias) {
-                        tex += fab(horario, dias, hs, dia, h)+",";
-                    }
-                texto += tex+"\";\",\") \n"
-                }
-                return texto
-            }
-            function fab(horario, dias, hs, dia, h) {
-                for( i in horario) {
-                        for( t in horario[i].hrs) {
-                            let tempo = horario[i].hrs[t];
-                            if(overlap(tempo.dia, tempo.hi, tempo.hf, dias[dia], hs[h][0], hs[h][1])) {
-                            return horario[i].cod;
-                            }
-                        }
-                        }
-                return " ";
-            }
-            function addHora(materia, ino) {
-                let red = materias.filter((e) => (e.cod == materia))
-                for ( i in red) {
-                    let m = red[i];
-                    if(testaHorarios(m, horarios)) {
-                        horarios.push(m);
-                        if(ino+1 != mats.length) {
-                            addHora(mats[ino+1], ino+1);
-                        }else {
-                        let horeste = horarios.slice();
-                        horeste.sort((a,b) => (a.cod<b.cod)?-1:1);
-                        if(!possibilidades.some((e) => JSON.stringify(e) == JSON.stringify(horeste))) {
-                        possibilidades.push(horeste);
-                        possibilidades_i++;
-                        console.log(possibilidades_i);
-                        }
-                        }
-                        horarios.pop();
-                    }
-                }
-            }
-            function testaHorarios(materia, horarios) {
-                for ( i in materia.hrs) {
-                    if(!testaHor(materia.hrs[i], horarios)) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-            function testaHor( horario, horarios) {
-                for ( i in horarios) {
-                    for ( j in horarios[i].hrs) {
-                        let ho = horarios[i].hrs[j]
-                        if(overlap(horario.dia, horario.hi, horario.hf, ho.dia, ho.hi, ho.hf)) {
-                            return false;
-                        }
-                    }
-                }
-                return true;
-            }
-            function overlap(dia, hi, hf, dia2, hi2, hf2) {
-                if(dia != dia2) {
-                    return false;
-                }else {
-                    if(hi2 >= hi && hi2 < hf) {
-                        return true;
-                    }else if(hf2 > hi && hf2 <= hf) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-
-            function testaPossibilidades() {
-                document.getElementById('horarios_possiveis').innerHTML = '<span style="animation: rotation 1s linear infinite; display: inline-block;">⏳</span>';
-                setTimeout(() => { possibilidades_i = 0;
-                possibilidades = [];
-                horarios = [];
-                addHora(mats[0], 0);
-                document.getElementById("horarios_possiveis").innerHTML = "Horários possíveis: "+possibilidades_i;
-                resTabelas = [];
-                for( i in possibilidades ) {
-                    resTabelas.push(renderTabela(possibilidades[i]))
-                }
-                i_tabela = 0;
-                proxTabela(0);
-                document.getElementById("tab_pags").hidden = false;
-                document.getElementById("horario_pos").hidden = false;},10);
-            }
-
-        </script>
+                    whil…</script>
     </head>
     <body>
+<a href="https://github.com/bentoemanuel/bentoemanuel.github.io" style="
+    right: 10pt;
+    position: absolute;
+    font-size: large;
+" target="_blank">Como usar</a>
         <p>Insira o código da Matéria:  <span id="import_text"></span></p>
         <textarea id="cod" style="margin: 0px;width: 179px;height: 25px;font-size: 123%;resize: none;" oninput="confereMateria();"></textarea>
         <span id="importar_turmas" hidden="">  Turma disponível para essa matéria no arquivo: <button onclick="importTurmas()">Importar Turmas...</button></span>
@@ -528,9 +385,9 @@
         <p id="materias_inclusas">Matérias inclusas:</p>
         <button id="possibilidades" onclick="testaPossibilidades()" disabled="">Criar todos os horários possíveis</button>
         <p id="horarios_possiveis">Horários possíveis: </p>
-        <p id="tab_pags" hidden><span id="cont_tab">1/12 </span><button onclick="proxTabela(-1)">◀</button><button onclick="proxTabela(1)">▶</button></p>
+        <p id="tab_pags" hidden=""><span id="cont_tab">1/12 </span><button onclick="proxTabela(-1)">◀</button><button onclick="proxTabela(1)">▶</button></p>
 
-        <table style="margin-left: 2px;" id="horario_pos" hidden>
+        <table style="margin-left: 2px;" id="horario_pos" hidden="">
             <tbody><tr><th style="
             width: 46.69px;
             /* height: 100%; */
@@ -631,4 +488,5 @@
 
 
 
-</body></html>
+
+<div id="window_namer_extension_has_loaded" style="display: none;"></div></body></html>
