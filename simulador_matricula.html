@@ -225,7 +225,7 @@
             }
 
             function importTurmas() {
-                let cods = document.getElementById("cod").value.split(",");
+                let cods = document.getElementById("cod").value.toUpperCase().split(",");
                 document.getElementById('importar_turmas').hidden = true;
                 for(i in cods) {
                     importTurma(cods[i]);
@@ -235,7 +235,7 @@
             }
 
             function confereMateria() {
-                      let cods = document.getElementById("cod").value.split(",");
+                      let cods = document.getElementById("cod").value.toUpperCase().split(",");
                       document.getElementById('importar_turmas').hidden = true;
                       for(i in cods) {
                         if( cods[i] != "" && turmas_imp_e.filter(e => e[0] == cods[i]).length > 0) {
