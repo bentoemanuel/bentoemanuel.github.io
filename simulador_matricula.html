@@ -630,6 +630,12 @@
             document.getElementById("horarios").addEventListener("mousedown", (e) => {e.preventDefault()});
             let calendario = document.getElementById("calendario")
             let tds = calendario.getElementsByTagName("td")
+            document.getElementById("cod").addEventListener("keypress", e => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    importTurmas();
+                }
+            });
             impGit();
         </script>
     
