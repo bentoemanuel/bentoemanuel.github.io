@@ -206,7 +206,7 @@
                     }
                     let msm_hor = turmas.filter((e) => e[8] == turmas[i][8]);
                     let vags = msm_hor.reduce((accumulator, currentValue) => accumulator + (currentValue[6]*1),0, );
-                    if(!materias.some((e) => JSON.stringify(e) == JSON.stringify({cod: cod, hrs: hors_i}))) {
+                    if(!materias.some((e) => JSON.stringify(e) == JSON.stringify({cod: cod, hrs: hors_i, vgs: vags}))) {
                         adicionarTurma(cod,texto,hors_i,vags);
                     }
                 }
