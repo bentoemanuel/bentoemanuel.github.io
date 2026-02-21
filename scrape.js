@@ -15,3 +15,6 @@ const readable = await download.createReadStream();
 readable.setEncoding('utf16le');
 const writableStream = fs.createWriteStream('HORARIO_DAS_DISCIPLINAS.csv', {encoding: 'utf8'});
 readable.pipe(writableStream);
+writableStream.on('finish', () => {
+    process.exit(0);
+});
