@@ -28,7 +28,7 @@ jobs:
           $NOW = & Get-Date -Format "dd/MM/yyyy HH:mm"
           echo "CURRENT_TIME=$NOW" >> $env:GITHUB_ENV
     - run: npm ci
-    - run: npx playwright install --with-deps
+    - run: npx playwright install chromium
     - run: node scrape.js
     - run: |-
           git diff
