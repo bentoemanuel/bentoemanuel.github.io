@@ -5,11 +5,11 @@ name: Node.js CI
 
 on:
   schedule:
-    - cron: "49 8 * * 1-5"
-    - cron: "49 10 * * 1-5"
-    - cron: "49 12 * * 1-5"
-    - cron: "49 14 * * 1-5"
-    - cron: "49 16 * * 1-5"
+    - cron: "49 11 * * 1-5"
+    - cron: "49 13 * * 1-5"
+    - cron: "49 15 * * 1-5"
+    - cron: "49 17 * * 1-5"
+    - cron: "49 19 * * 1-5"
   workflow_dispatch:
   
 jobs:
