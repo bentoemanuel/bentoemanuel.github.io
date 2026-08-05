@@ -191,7 +191,7 @@
                 let turmas = turmas_imp_e.filter(e => e[0] == cod);
                 for( i in turmas) {
                     let hors_i = [];
-                    let hs_i = turmas[i][8].split("  ");
+                    let hs_i = turmas[i][8].split("   ");
                     for ( j in hs_i ) {
                         if(hs_i[j] != "") {
                             let hs_j = hs_i[j].split(" ");
@@ -286,7 +286,7 @@
                   let turmas = turmas_imp_e.filter(e => e[0] == cod).filter(e => e[4] == tur);
                   for( i in turmas) {
                       let hors_i = [];
-                      let hs_i = turmas[i][8].split("  ");
+                      let hs_i = turmas[i][8].split("   ");
                       for ( j in hs_i ) {
                           if(hs_i[j] != "") {
                               let hs_j = hs_i[j].split(" ");
@@ -357,6 +357,10 @@
                 i_tabela = Math.abs((i_tabela + n) % resTabelas.length);
                 document.getElementById("horario_pos").innerHTML = resTabelas[i_tabela];
                 document.getElementById("cont_tab").innerHTML = i_tabela+1 +"/" + resTabelas.length + " ";
+                let cred = 0;
+                possibilidades[i_tabela].forEach((e) => {e.hrs.forEach((g) => {cred += g.hf-g.hi})});
+                document.getElementById("cred").innerHTML = "Total de créditos: " + cred;
+                if (cred > 30) {document.getElementById("cred").style.color = "red"} else {document.getElementById("cred").style.color = "black"}
             }
 
             async function impGit() {
@@ -461,7 +465,8 @@
                 i_tabela = 0;
                 proxTabela(0);
                 document.getElementById("tab_pags").hidden = false;
-                document.getElementById("horario_pos").hidden = false;},10);
+                document.getElementById("horario_pos").hidden = false;
+                document.getElementById("cred").hidden = false;},10);
             }
 
         </script>
@@ -689,6 +694,7 @@
         </tr>
         </tbody>
         </table>
+        <span id="cred" hidden style="right:0px"></span>
 
         <script>
             document.getElementById("horarios").addEventListener("mousedown", (e) => {e.preventDefault()});
