@@ -5,7 +5,9 @@ const context = await browser.newContext({ acceptDownloads: true });
 const page = await context.newPage();
 await page.goto('https://www.puc-rio.br/microhorario');
 await page.viewportSize({width: 1080, height: 1024});
-//await page.getByRole('button', { name: 'Ok' }).click()
+if (await page.getByRole('button', { name: 'Ok' }).count() > 0 ) {
+    await page.getByRole('button', { name: 'Ok' }).click();
+}
 await page.locator('#btnBuscar').click()
 await page.locator('#pnlBaixarInfo').click()
 await page.locator('#ddlExtensao').selectOption("Texto");
