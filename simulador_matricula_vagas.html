@@ -253,13 +253,16 @@
                         let cods_hors = cods[i].match("\\[.*\\]")[0].slice(1,-1);
                         cods_hors = cods_hors.includes(",")?cods_hors.split(","):[cods_hors]
                         for(j in cods_hors) {
-                            
-                            importTurmaRestC(cods[i].match("^[^[({]*")[0],cods_hors[j]);
+
+                            importTurmaRestC(cods[i].match("^[^[({\*]*")[0],cods_hors[j]);
                             
                         }
                     }else if(brack == 1) {
                         throw new Error("Parsing Error!");
-                    }else {
+                    }
+                    if(cods[i].match("^[^[({]*")[0].endsWith("*")) {
+                        importTurmaAst(cods[i].match("^[^[({]*")[0].slice(0,-1))
+                    }else if(brack != 2) {
                         importTurma(cods[i]);
                     }
                     document.getElementById('importar_turmas').hidden = true;
@@ -271,7 +274,7 @@
                       let cods = document.getElementById("cod").value.toUpperCase().split(/,(?<!\[[^\]]*)/);
                       document.getElementById('importar_turmas').hidden = true;
                       for(i in cods) {
-                        if( cods[i].match("^[^[({]*") != "" && turmas_imp_e.filter(e => e[0] == cods[i].match("^[^[({]*")).length > 0) {
+                        if( cods[i].match("^[^[({\*]*") != "" && turmas_imp_e.filter(e => e[0] == cods[i].match("^[^[({\*]*")).length > 0) {
                             document.getElementById('importar_turmas').hidden = false;
                             if(cods.length > 1) {
                                 document.getElementById("importar_turmas"). innerHTML = '  Turma disponível para ≥ 1 dessas matérias no banco de dados da PUC: <button onclick="importTurmas()">Importar Turmas...</button>';
@@ -281,6 +284,31 @@
                         }
                       }
               }
+
+                function importTurmaAst(cod) {
+                    let turmas = turmas_imp_e.filter(e => e[0] == cod).filter(e => e[6] > 0);
+                    for( i in turmas) {
+                        let hors_i = [];
+                        let hs_i = turmas[i][8].split("   ");
+                        for ( j in hs_i ) {
+                            if(hs_i[j] != "") {
+                                let hs_j = hs_i[j].split(" ");
+                                let hi = hs_j[1].split("-")[0]*1;
+                                let hf = hs_j[1].split("-")[1]*1;
+                                hors_i.push({dia: DDS_M[hs_j[0]], hi: hi, hf: hf});
+                            }
+                        }
+                        let texto = "";
+                        for( k in hors_i ) {
+                            texto += (texto==""?"":" / ")+DDS[hors_i[k].dia]+" "+(hors_i[k].hi<10?"0":"")+hors_i[k].hi+"-"+(hors_i[k].hf<10?"0":"")+hors_i[k].hf;
+                        }
+                        let msm_hor = turmas.filter((e) => e[8] == turmas[i][8]);
+                        let vags = msm_hor.reduce((accumulator, currentValue) => accumulator + (currentValue[6]*1),0, );
+                        if(!materias.some((e) => JSON.stringify(e) == JSON.stringify({cod: cod, hrs: hors_i, vgs: vags}))) {
+                            adicionarTurma(cod,texto,hors_i,vags);
+                        }
+                    }
+                }
 
               function importTurmaRestC(cod,tur) {
                   let turmas = turmas_imp_e.filter(e => e[0] == cod).filter(e => e[4] == tur);
