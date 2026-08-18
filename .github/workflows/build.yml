@@ -6,6 +6,13 @@ name: Node.js CI
 on:
   schedule:
     - cron: "49 11 * * 1-5"
+      timezone: "America/Sao_Paulo"
+    - cron: "49 07 * * 1-5"
+      timezone: "America/Sao_Paulo"
+    - cron: "49 17 * * 1-5"
+      timezone: "America/Sao_Paulo"
+    -cron: "49 10 * * 1-5"
+      timezone: "America/Sao_Paulo"
   workflow_dispatch:
   
 jobs:
